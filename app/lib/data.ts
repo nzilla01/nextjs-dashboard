@@ -16,13 +16,11 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const data = await sql<Revenue[]> ; //SELECT * FROM revenue;
-
-
-    // console.log('Data fetch completed after 3 seconds.');
+    const data = await sql<Revenue[]> `SELECT * FROM revenue`
+    console.log('Data fetch completed after 3 seconds.');
 
     return data;
   } catch (error) {
@@ -33,11 +31,11 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-    const data = await sql<LatestInvoiceRaw[]>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
+     const data = await sql<LatestInvoiceRaw[]> 
+     `SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
+       JOIN customers ON invoices.customer_id = customers.id
+       ORDER BY invoices.date DESC
       LIMIT 5`;
 
     const latestInvoices = data.map((invoice) => ({
@@ -94,7 +92,8 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable[]>`
+    const invoices = await sql<InvoicesTable[]>
+    `
       SELECT
         invoices.id,
         invoices.amount,
@@ -124,9 +123,8 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const data = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
+    const data = await sql 
+    `SELECT COUNT(*) FROM invoices JOIN customers ON invoices.customer_id = customers.id
     WHERE
       customers.name ILIKE ${`%${query}%`} OR
       customers.email ILIKE ${`%${query}%`} OR

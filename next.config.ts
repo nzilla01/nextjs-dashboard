@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     turbo: {
       loaders: {}, // empty object disables turbo features safely
     },
+    ppr: 'incremental'
   },
 };
 
