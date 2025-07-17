@@ -1,4 +1,4 @@
-import { createInvoice } from '@/app/lib/actions';
+import { updateInvoice } from '@/app/lib/actions';
 import { deleteInvoice } from '@/app/lib/actions';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ export function CreateInvoice() {
 }
 
 export function UpdateInvoice({ id }: { id: string }) {
-  // const createinvoice= createInvoice.bind(null, id);
+  const createinvoice= updateInvoice.bind(null, id);
   return (
     <Link
       href={"/dashboard/invoices/${id}/edit"}
